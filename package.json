@@ -1,0 +1,16 @@
+{
+  "name": "react-mobx-blog",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/kokily/react-mobx-blog",
+  "author": "kokily <kokily@naver.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  },
+  "scripts": {
+    "server": "cd server && yarn start",
+    "client": "cd client && yarn start",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+  }
+}
