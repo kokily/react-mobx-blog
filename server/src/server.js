@@ -9,6 +9,9 @@ import morgan from 'koa-morgan'
 // MongoDB 모듈
 import mongoose from 'mongoose'
 
+// JWT 미들웨어 로드
+import { jwtMiddleware } from 'jwt/token'
+
 // RestAPI
 import api from 'api'
 
@@ -29,7 +32,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true })
 .catch((err) => console.error(err.stack))
 
 // 미들웨어
-app
+app.use(jwtMiddleware)
 .use(morgan('dev'))
 .use(bodyParser())
 .use(router.routes())

@@ -109,3 +109,16 @@ exports.logout = (ctx) => {
   // 204: 컨텐츠 없음
   ctx.status = 204
 }
+
+// 현 접속자 확인 (GET) API '/api/auth/check'
+exports.check = (ctx) => {
+  const { user } = ctx.request
+
+  if (!user) {
+    // 403: 권한 없음
+    ctx.status = 403
+    return
+  }
+
+  ctx.body = user
+}
