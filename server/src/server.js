@@ -29,7 +29,8 @@ mongoose.connect(mongoURI, { useNewUrlParser: true })
 .catch((err) => console.error(err.stack))
 
 // 미들웨어
-app.use(morgan('dev'))
+app
+.use(morgan('dev'))
 .use(bodyParser())
 .use(router.routes())
 .use(router.allowedMethods())

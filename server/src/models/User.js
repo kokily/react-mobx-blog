@@ -1,6 +1,9 @@
 import mongoose from 'mongoose'
 import crypto from 'crypto'
 
+// JWT 토큰생성 함수
+import { generateToken } from 'jwt/token'
+
 const User = new mongoose.Schema({
   username: String,
   email: String,
@@ -57,6 +60,16 @@ User.methods.validatePassword = function (password) {
   const result = hash(password)
 
   return this.password === result
+}
+
+User.methods.generateToken = function() {
+  // JWT에 넣을 내용
+  const payload = {
+    _id: this._id,
+    email: this.email
+  }
+
+  return generateToken(payload, 'User')
 }
 
 export default mongoose.model('User', User)

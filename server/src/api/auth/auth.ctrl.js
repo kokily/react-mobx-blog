@@ -83,5 +83,29 @@ exports.login = async (ctx) => {
     return
   }
 
+  // 토큰 생성 및 쿠키에 저장
+  let token = null
+
+  try {
+    token = await user.generateToken()
+  } catch (err) {
+    ctx.throw(500, err)
+  }
+
+  ctx.cookies.set('login_token', token, {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 7 // 7일
+  })
   ctx.body = user
+}
+
+// 로그아웃 (POST) API '/api/auth/logout'
+exports.logout = (ctx) => {
+  ctx.cookies.set('login_token', null, {
+    httpOnly: true,
+    maxAge: 0
+  })
+
+  // 204: 컨텐츠 없음
+  ctx.status = 204
 }

@@ -9,5 +9,6 @@ auth.get('/', (ctx) => {
 
 auth.post('/register', authCtrl.register)
 auth.post('/login', authCtrl.login)
+auth.post('/logout', authCtrl.logout)
 
 export default auth
