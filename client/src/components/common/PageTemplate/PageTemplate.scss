@@ -1,0 +1,11 @@
+@import 'utils';
+
+.page-template {
+  background: $oc-gray-1;
+
+  main {
+    min-height: calc(100vh - 8rem);
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
