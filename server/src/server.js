@@ -9,6 +9,9 @@ import morgan from 'koa-morgan'
 // MongoDB 모듈
 import mongoose from 'mongoose'
 
+// RestAPI
+import api from 'api'
+
 // Dotenv 설정파일 사용 (/.env)
 config()
 
@@ -35,6 +38,8 @@ app.use(morgan('dev'))
 router.get('/', (ctx) => {
   ctx.body = '루트 경로'
 })
+
+router.use('/api', api.routes())
 
 // Server Listening
 app.listen(port, () => console.log(`Koa Server On ${port} PORT!!`))
