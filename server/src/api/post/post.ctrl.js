@@ -1,8 +1,29 @@
 import Post from 'models/Post'
 import Joi from 'joi'
+import { Types } from 'mongoose'
+
+// 객체 검증 함수
+exports.checkObjectId = (ctx, next) => {
+  const { id } = ctx.params
+
+  if (!Types.ObjectId.isValid(id)) {
+    ctx.status = 400
+    return null
+  }
+
+  return next()
+}
 
 // 포스트 작성 (POST) API '/api/post/write'
 exports.write = async (ctx) => {
+  // 사용자 로그인 상태 확인
+  const { user } = ctx.request
+
+  if (!user) {
+    ctx.status = 403
+    return
+  }
+
   // Request Body(객체 값) 검증
   const data = Joi.object().keys({
     title: Joi.string().required(),
@@ -78,6 +99,7 @@ exports.read = async (ctx) => {
 
 // 포스트 특정(ID) 글 수정하기 (PUT) API '/api/post/:id'
 exports.update = async (ctx) => {
+  const { user } = ctx.request
   const { id } = ctx.params
 
   try {
@@ -85,6 +107,11 @@ exports.update = async (ctx) => {
 
     if (!post) {
       ctx.status = 404
+      return
+    }
+
+    if (!user || user._id !== post.author.toString()) {
+      ctx.status = 403
       return
     }
 
@@ -96,9 +123,17 @@ exports.update = async (ctx) => {
 
 // 포스트 특정(ID) 글 삭제하기 (DELETE) API '/api/post/:id'
 exports.remove = async (ctx) => {
+  const { user } = ctx.request
   const { id } = ctx.params
 
   try {
+    const post = await Post.findById(id).exec()
+
+    if (!user || user._id !== post.author.toString()) {
+      ctx.status = 403
+      return
+    }
+
     await Post.findByIdAndRemove(id).exec()
     ctx.status = 204
   } catch (err) {
