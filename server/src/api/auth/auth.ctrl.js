@@ -51,5 +51,37 @@ exports.register = async (ctx) => {
 
 // 로그인 (POST) API '/api/auth/login'
 exports.login = async (ctx) => {
-  
+  // 데이터 검증
+  const data = Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(6).required()
+  })
+
+  const result = Joi.validate(ctx.request.body, data)
+
+  if (result.error) {
+    // 400: 잘못된 요청
+    ctx.status = 400
+    return
+  }
+
+  // email, password를 리퀘스트에서 받아옴
+  const { email, password } = ctx.request.body
+
+  let user = null
+
+  try {
+    user = await User.findByEmail(email)
+  } catch (err) {
+    ctx.throw(500, err)
+  }
+
+  // 사용자 권한
+  if (!user || !user.validatePassword(password)) {
+    // 403: 권한없음
+    ctx.status = 403
+    return
+  }
+
+  ctx.body = user
 }
