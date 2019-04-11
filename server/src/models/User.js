@@ -13,7 +13,7 @@ const User = new mongoose.Schema({
 
 // 모델 메소드 : 비밀번호 해싱 -> crypto sha256방식
 function hash (password) {
-  return crypto(
+  return crypto.createHmac(
     'sha256',
     process.env.SECRET_KEY
   ).update(password).digest('hex')
