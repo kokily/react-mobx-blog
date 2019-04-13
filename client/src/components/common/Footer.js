@@ -1,9 +1,16 @@
 import React from 'react'
 
+// ReactStrap
+import { Row, Col } from 'reactstrap'
+
 function Footer() {
   return (
-    <footer className="footer">
-      푸터
+    <footer>
+      <Row>
+        <Col sm="12" md="12" lg="12">
+          <p>React Blog</p>
+        </Col>
+      </Row>
     </footer>
   )
 }
