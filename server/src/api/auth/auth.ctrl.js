@@ -115,7 +115,7 @@ exports.check = (ctx) => {
   const { user } = ctx.request
 
   if (!user) {
-    ctx.body = '로그인 정보 없음'
+    ctx.body = ''
     return
   }
 

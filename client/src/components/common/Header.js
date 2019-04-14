@@ -39,10 +39,12 @@ class Header extends Component {
                   {auth.currentUser._id ?
                     <DropdownItem onClick={auth.handleLogout}>로그아웃</DropdownItem>
                     :
+                    <>
                     <DropdownItem tag={Link} to="/auth/login">로그인</DropdownItem>
+                      <DropdownItem divider />
+                    <DropdownItem tag={Link} to="/auth/register">회원가입</DropdownItem>
+                    </>
                   }
-                  <DropdownItem divider />
-                  <DropdownItem tag={Link} to="/auth/register">회원가입</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
             </Nav>

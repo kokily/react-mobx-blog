@@ -8,7 +8,7 @@ post.get('/', (ctx) => {
 })
 
 post.post('/write', postCtrl.write)
-post.get('/list', postCtrl.list)
+post.get('/list/:page', postCtrl.list)
 
 post.get('/:id', postCtrl.checkObjectId, postCtrl.read)
 post.put('/:id', postCtrl.checkObjectId, postCtrl.update)

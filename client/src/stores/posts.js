@@ -8,13 +8,26 @@ export default class PostsStore {
 
   // 포스트 리스트
   @observable postList = []
+  @observable currentPage = 1
+  @observable lastPage = 1
 
-  @action getPostList = async () => {
-    await axios.get('/api/post/list')
+  @action getPostList = async (page) => {
+    await axios.get(`/api/post/list/${page}`)
       .then(res => {
         this.postList = res.data
+        this.lastPage = res.headers.lastpage
       })
       .catch((err) => console.error(err))
+  }
+
+  @action prevPage = () => {
+    this.currentPage = this.currentPage - 1
+    this.getPostList(this.currentPage)
+  }
+
+  @action nextPage = () => {
+    this.currentPage = this.currentPage + 1
+    this.getPostList(this.currentPage)
   }
 
   // 포스트 작성

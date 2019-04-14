@@ -11,6 +11,9 @@ import { Table, Modal, ModalHeader, ModalBody, ModalFooter,
 // Moment
 import Moment from 'react-moment'
 
+// Style
+import './scss/PostList.scss'
+
 @inject('posts', 'auth')
 @observer
 class PostList extends Component {
@@ -49,6 +52,28 @@ class PostList extends Component {
             })}
           </tbody>
         </Table>
+        <hr />
+
+        <div className="pagination">
+          <Button
+            color="success"
+            outline
+            disabled={posts.currentPage === 1}
+            onClick={posts.prevPage}
+          >
+            이전 페이지
+          </Button>
+          <Button color="primary" disabled>{posts.currentPage}</Button>
+          <Button
+            color="success"
+            outline
+            disabled={posts.currentPage === parseInt(posts.lastPage)}
+            onClick={posts.nextPage}
+          >
+            다음 페이지
+          </Button>
+        </div>
+
         <Modal isOpen={posts.readOpen} toggle={posts.togglePost} size="lg" keyboard={false}>
           <ModalHeader toggle={posts.togglePost}>글 세부보기</ModalHeader>
           <ModalBody>
@@ -56,13 +81,17 @@ class PostList extends Component {
               <FormGroup row>
                 <Label for="title" sm={2}>제목</Label>
                 <Col sm={10}>
-                  <Input type="text" id="title" value={posts.title} onChange={posts.changeTitle} />
+                  <Input type="text" id="title" value={posts.title} onChange={posts.changeTitle}
+                    disabled={auth.currentUser._id !== posts.postAuthor}
+                  />
                 </Col>
               </FormGroup>
               <FormGroup row>
                 <Label for="body" sm={2}>내용</Label>
                 <Col sm={10}>
-                  <Input type="textarea" id="body" value={posts.body} onChange={posts.changeBody} />
+                  <Input type="textarea" id="body" value={posts.body} onChange={posts.changeBody}
+                    disabled={auth.currentUser._id !== posts.postAuthor}
+                  />
                 </Col>
               </FormGroup>
             </Form>
@@ -75,7 +104,7 @@ class PostList extends Component {
                 <Button color="danger" onClick={posts.removePost}>삭 제</Button>
               </>
             }
-            <Button color="warning" onClick={posts.closePost}>취 소</Button>
+            <Button color="warning" onClick={posts.closePost}>닫 기</Button>
           </ModalFooter>
         </Modal>
       </>

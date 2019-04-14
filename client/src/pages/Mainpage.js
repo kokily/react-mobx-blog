@@ -13,11 +13,11 @@ import { Jumbotron, Container, Button,
   Form, FormGroup, Label, Col, Input
 } from 'reactstrap'
 
-@inject('posts')
+@inject('posts', 'auth')
 @observer
 class Mainpage extends Component {
   render() {
-    const { posts } = this.props
+    const { posts, auth } = this.props
 
     return (
       <PageContainer>
@@ -29,9 +29,12 @@ class Mainpage extends Component {
 
         <PostList />
 
-        <Container fluid className="text-right">
-          <Button outline color="primary" onClick={posts.toggleModal}>글 작성</Button>
-        </Container>
+        {auth.currentUser === '' ?
+          '' :
+          <Container fluid className="text-right">
+            <Button outline color="primary" onClick={posts.toggleModal}>글 작성</Button>
+          </Container>
+        }
 
         <Modal isOpen={posts.writeOpen} toggle={posts.toggleModal} size="lg" keyboard={false}>
           <ModalHeader toggle={posts.toggleModal}>포스트 글 작성</ModalHeader>
