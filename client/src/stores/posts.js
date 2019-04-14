@@ -51,7 +51,8 @@ export default class PostsStore {
 
   // 특정 포스트 읽기
   @observable readOpen = false
-  @observable postID = {}
+  @observable postID = ''
+  @observable postAuthor = ''
 
   @action togglePost = () => {
     this.readOpen = !this.readOpen
@@ -63,6 +64,7 @@ export default class PostsStore {
         this.postID = res.data._id
         this.title = res.data.title
         this.body = res.data.body
+        this.postAuthor = res.data.author
         this.togglePost()
       })
       .catch((err) => {
@@ -71,7 +73,7 @@ export default class PostsStore {
   }
 
   @action closePost = () => {
-    this.postID = {}
+    this.postID = ''
     this.title = ''
     this.body = ''
     this.writeOpen = false
@@ -87,7 +89,7 @@ export default class PostsStore {
       body: this.body
     }).then(res => {
       window.alert('포스트 수정 완료')
-      this.postID = {}
+      this.postID = ''
       this.title = ''
       this.body = ''
       this.togglePost()
@@ -105,7 +107,7 @@ export default class PostsStore {
     await axios.delete(`/api/post/${id}`)
       .then(res => {
         window.alert('포스트 삭제 완료')
-        this.postID = {}
+        this.postID = ''
         this.title = ''
         this.body = ''
         this.togglePost()

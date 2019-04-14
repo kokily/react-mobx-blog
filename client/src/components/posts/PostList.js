@@ -11,7 +11,7 @@ import { Table, Modal, ModalHeader, ModalBody, ModalFooter,
 // Moment
 import Moment from 'react-moment'
 
-@inject('posts')
+@inject('posts', 'auth')
 @observer
 class PostList extends Component {
   componentDidMount() {
@@ -19,7 +19,7 @@ class PostList extends Component {
   }
 
   render() {
-    const { posts } = this.props
+    const { posts, auth } = this.props
 
     return (
       <>
@@ -68,8 +68,13 @@ class PostList extends Component {
             </Form>
           </ModalBody>
           <ModalFooter>
-            <Button color="success" onClick={posts.updatePost}>수 정</Button>
-            <Button color="danger" onClick={posts.removePost}>삭 제</Button>
+            {auth.currentUser._id !== posts.postAuthor ?
+              '' :
+              <>
+                <Button color="success" onClick={posts.updatePost}>수 정</Button>
+                <Button color="danger" onClick={posts.removePost}>삭 제</Button>
+              </>
+            }
             <Button color="warning" onClick={posts.closePost}>취 소</Button>
           </ModalFooter>
         </Modal>
