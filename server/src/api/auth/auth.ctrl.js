@@ -92,7 +92,7 @@ exports.login = async (ctx) => {
     ctx.throw(500, err)
   }
 
-  ctx.cookies.set('login_token', token, {
+  ctx.cookies.set('access_token', token, {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24 * 7 // 7일
   })
@@ -101,7 +101,7 @@ exports.login = async (ctx) => {
 
 // 로그아웃 (POST) API '/api/auth/logout'
 exports.logout = (ctx) => {
-  ctx.cookies.set('login_token', null, {
+  ctx.cookies.set('access_token', null, {
     httpOnly: true,
     maxAge: 0
   })
@@ -115,8 +115,7 @@ exports.check = (ctx) => {
   const { user } = ctx.request
 
   if (!user) {
-    // 403: 권한 없음
-    ctx.status = 403
+    ctx.body = '로그인 정보 없음'
     return
   }
 

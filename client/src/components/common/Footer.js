@@ -1,16 +1,12 @@
 import React from 'react'
 
-// ReactStrap
-import { Row, Col } from 'reactstrap'
+// Style
+import './scss/Footer.scss'
 
 function Footer() {
   return (
-    <footer>
-      <Row>
-        <Col sm="12" md="12" lg="12">
-          <p>React Blog</p>
-        </Col>
-      </Row>
+    <footer className="footer">
+      React Blog
     </footer>
   )
 }

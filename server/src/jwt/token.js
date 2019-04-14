@@ -40,7 +40,7 @@ function decodeToken (token) {
     - jti: jwt 고유 식별자
 */
 exports.jwtMiddleware = async (ctx, next) => {
-  const token = ctx.cookies.get('login_token')
+  const token = ctx.cookies.get('access_token')
 
   if (!token) return next()
 
@@ -52,7 +52,7 @@ exports.jwtMiddleware = async (ctx, next) => {
       const { _id, email } = decoded
       const newToken = await generateToken({ _id, email }, 'User')
 
-      ctx.cookies.set('login_token', newToken, {
+      ctx.cookies.set('access_token', newToken, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 7
       })

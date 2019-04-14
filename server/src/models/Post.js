@@ -7,6 +7,7 @@ const Post = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
+  name: String,
   createdAt: {
     type: Date,
     default: Date.now

@@ -1,4 +1,5 @@
 import Post from 'models/Post'
+import User from 'models/User'
 import Joi from 'joi'
 import { Types } from 'mongoose'
 
@@ -38,13 +39,22 @@ exports.write = async (ctx) => {
     return
   }
 
+  let currentUser = null
+
+  try {
+    currentUser = await User.findById(user).exec()
+  } catch (err) {
+    ctx.throw(500, err)
+  }
+
   // title, body를 리퀘스트에서 받아옴
   const { title, body } = ctx.request.body
-  const author = ctx.request.user._id
+  const author = ctx.request.user
+  const name = currentUser.username
 
   // 새로은 글 작성
   const post = new Post({
-    title, body, author
+    title, body, author, name
   })
 
   try {
@@ -101,6 +111,8 @@ exports.read = async (ctx) => {
 exports.update = async (ctx) => {
   const { user } = ctx.request
   const { id } = ctx.params
+
+  ctx.request.body.updatedAt = Date.now()
 
   try {
     const post = await Post.findByIdAndUpdate(id, ctx.request.body, { new: true }).exec()

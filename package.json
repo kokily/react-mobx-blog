@@ -12,5 +12,8 @@
     "server": "cd server && yarn start",
     "client": "cd client && yarn start",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+  },
+  "dependencies": {
+    "node-sass": "^4.11.0"
   }
 }

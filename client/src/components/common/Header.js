@@ -10,11 +10,14 @@ import { Navbar, NavbarBrand, NavbarToggler, Collapse,
   UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from 'reactstrap'
 
-@inject('header')
+// Style
+import './scss/Header.scss'
+
+@inject('header', 'auth')
 @observer
 class Header extends Component {
   render() {
-    const { header } = this.props
+    const { header, auth } = this.props
     
     return (
       <div className="header">
@@ -33,10 +36,13 @@ class Header extends Component {
                 </DropdownToggle>
 
                 <DropdownMenu right>
-                  <DropdownItem tag={Link} to="/logout">로그아웃</DropdownItem>
-                  <DropdownItem tag={Link} to="/login">로그인</DropdownItem>
+                  {auth.currentUser._id ?
+                    <DropdownItem onClick={auth.handleLogout}>로그아웃</DropdownItem>
+                    :
+                    <DropdownItem tag={Link} to="/auth/login">로그인</DropdownItem>
+                  }
                   <DropdownItem divider />
-                  <DropdownItem tag={Link} to="/register">회원가입</DropdownItem>
+                  <DropdownItem tag={Link} to="/auth/register">회원가입</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
             </Nav>
